@@ -364,6 +364,7 @@ class Auth {
 	 * @param (int|bool) $user Logged User ID
 	 *
 	 * @return mixed|false|\WP_User
+	 * @throws \Exception
 	 */
 	public static function filter_determine_current_user( $user ) {
 
@@ -377,7 +378,7 @@ class Auth {
 		/**
 		 * If no token was generated, return the existing value for the $user
 		 */
-		if ( empty( $token ) ) {
+		if ( is_wp_error( $token ) || empty( $token ) ) {
 
 			/**
 			 * Return the user that was passed in to the filter
@@ -585,8 +586,8 @@ class Auth {
 			 * If any exceptions are caught
 			 */
 		} catch ( \Exception $error ) {
-			self::set_status( 403 );
-			return new \WP_Error( 'invalid_token', __( 'The JWT Token is invalid', 'wp-graphql-jwt-authentication' ) );
+			self::set_status( 401 );
+			return false;
 		}
 
 		self::$is_refresh_token = false;
