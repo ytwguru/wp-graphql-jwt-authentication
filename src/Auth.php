@@ -102,7 +102,7 @@ class Auth {
 		if ( ! isset( self::$expiration ) ) {
 
 			/**
-			 * Set the expiration time, default is 700 seconds.
+			 * Set the expiration time, default is 7 days.
 			 */
 			$expiration = self::get_token_issued() + 604800;
 
@@ -124,7 +124,7 @@ class Auth {
 	 *
 	 * @return null|string
 	 */
-	protected static function get_signed_token( \WP_User $user, $cap_check = true ) {
+	public static function get_signed_token( \WP_User $user, $cap_check = true ) {
 
 		/**
 		 * Only allow the currently signed in user access to a JWT token
